@@ -1,5 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class PlayerScript : MonoBehaviour
     Vector3 MoveDirection = Vector3.zero;
     float VerticalVelocity = 0f;
 
+
+    TileScript TileObject = null;
+    bool PlayerIsOnTile = false;
+
+
     private void Awake()
     {
         _input = GetComponent<InputSub>();
@@ -22,8 +29,20 @@ public class PlayerScript : MonoBehaviour
     }
 
 
+    private void Start()
+    {
+        //StartCoroutine("CheckTileLoop");
+    }
+
+
+
+
     private void Update()
     {
+
+
+
+
         PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y);
         MoveDirection = new Vector3(PlayerInputValue.x, 0f, PlayerInputValue.y).normalized;
 
@@ -50,6 +69,50 @@ public class PlayerScript : MonoBehaviour
 
         CharController.Move(PlayerVelocity * Time.deltaTime);
 
+
+        //============================================================
+
+        if (TileObject != null && _input.DigButton)
+        {
+            TileObject.ActivateTheTile();
+        }
+
+
+
+        if (_input.FlagButton && TileObject != null)
+        {
+            if (TileObject.TileIsFlagged)
+            {
+                Debug.Log("RemoveFlag");
+                TileObject.RemoveTheFlag();
+            }
+            else
+            {
+                Debug.Log("PlacedAFlag");
+                TileObject.PlaceTheFlag();
+            }
+        }
+
+
+      
+
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 7 && TileObject == null)
+        {
+            TileObject = other.gameObject.GetComponent<TileScript>();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 7 && TileObject != null)
+        {
+            TileObject = null;
+        }
     }
 
 

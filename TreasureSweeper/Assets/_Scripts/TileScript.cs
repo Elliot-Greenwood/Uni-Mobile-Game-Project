@@ -15,6 +15,18 @@ public class TileScript : MonoBehaviour
     public Material[] TileMaterial;
     public Material MineMat;
 
+    [Header("Other")]
+    public GameObject TileCover;
+    public GameObject Flag;
+    public GameObject Mine;
+
+    public Renderer TileCoverMaterialRendered;
+    public Material TileCoverMatIdle;
+    public Material TileCoverMatOnstep;
+
+
+
+
 
     Renderer MaterialRendered;
 
@@ -64,6 +76,46 @@ public class TileScript : MonoBehaviour
         {
             SurroundingTiles.Add(tile);
         }
+
+
+        if (other.gameObject.layer == 3)
+        {
+            TileCoverMaterialRendered.material = TileCoverMatOnstep;
+           
+        }
+
     }
-    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 3)
+        {
+            TileCoverMaterialRendered.material = TileCoverMatIdle;
+        }
+    }
+
+
+
+
+
+    public void ActivateTheTile()
+    {
+        if (!TileIsFlagged)
+        {
+            TileIsActivated = true;
+            TileCover.SetActive(false);
+        }
+    }
+
+    public void PlaceTheFlag()
+    {
+        TileIsFlagged = true;
+        Flag.SetActive(true);
+    }
+    public void RemoveTheFlag()
+    {
+        TileIsFlagged = false;
+        Flag.SetActive(false);
+
+    }
+
 }
