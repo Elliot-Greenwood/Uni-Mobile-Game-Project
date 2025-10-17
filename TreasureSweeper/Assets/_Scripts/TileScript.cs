@@ -1,12 +1,16 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
+    MineFieldManagerScript MineManagerScript;
+
     [Header("Tile Settings")]
     public bool TileIsBomb = false;
     public bool TileIsFlagged = false;
     public bool TileIsActivated = false;
+    public bool TileIsComplete = false;
 
     public int HowManyMinesInArea = 0;
 
@@ -27,11 +31,12 @@ public class TileScript : MonoBehaviour
 
 
 
-
     Renderer MaterialRendered;
 
     private void Start()
     {
+        MineManagerScript = GameObject.FindWithTag("MineFieldManager").GetComponent<MineFieldManagerScript>();
+
         MaterialRendered = GetComponent<Renderer>();
 
         Invoke("InitTileCheck", 0.1f);
@@ -103,6 +108,25 @@ public class TileScript : MonoBehaviour
         {
             TileIsActivated = true;
             TileCover.SetActive(false);
+
+            if (TileIsActivated && TileIsBomb)
+            {
+                //game over.
+                Debug.Log("GAME OVER!!!");
+            }
+
+            if (HowManyMinesInArea == 0)
+            {
+                foreach (TileScript tile in SurroundingTiles)
+                {
+                    if (!tile.TileIsBomb && !tile.TileIsActivated)
+                    {
+                        tile.TileIsActivated = true;
+                        tile.ActivateTheTile();
+                    }
+                }
+            }
+
         }
     }
 
@@ -110,11 +134,29 @@ public class TileScript : MonoBehaviour
     {
         TileIsFlagged = true;
         Flag.SetActive(true);
+
+        if (TileIsBomb && TileIsFlagged)
+        {
+            TileIsComplete = true;
+            MineManagerScript.MinesFlaggedCorrectly++;
+        }
+
+        if (MineManagerScript.TotalMinesInMap == MineManagerScript.MinesFlaggedCorrectly)
+        {
+            //Win Game
+            Debug.Log("GAME COMPLETED!!!");
+        }
     }
     public void RemoveTheFlag()
     {
         TileIsFlagged = false;
         Flag.SetActive(false);
+
+        if (TileIsComplete)
+        {
+            TileIsComplete = false;
+            MineManagerScript.MinesFlaggedCorrectly--;
+        }
 
     }
 

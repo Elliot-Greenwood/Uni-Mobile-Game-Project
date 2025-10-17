@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -8,47 +7,39 @@ public class PlayerScript : MonoBehaviour
     InputSub _input;
     CharacterController CharController;
 
+    [SerializeField] Transform CamTargetPoint;
+
     public float PlayerMovementSpeed = 5f;
     public float RotationSpeed = 50f;
     public float Gravity = -9.81f;
 
     Vector2 PlayerInputValue = Vector2.zero;
     Vector3 PlayerVelocity = Vector3.zero;
-    Vector3 MoveDirection = Vector3.zero;
     float VerticalVelocity = 0f;
 
 
     TileScript TileObject = null;
-    bool PlayerIsOnTile = false;
-
-
+    //bool PlayerIsOnTile = false;
     private void Awake()
     {
         _input = GetComponent<InputSub>();
         CharController = GetComponent<CharacterController>();
     }
 
-
     private void Start()
     {
-        //StartCoroutine("CheckTileLoop");
+        
     }
-
-
-
 
     private void Update()
     {
 
-
-
-
         PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y);
-        MoveDirection = new Vector3(PlayerInputValue.x, 0f, PlayerInputValue.y).normalized;
+        PlayerVelocity = CamTargetPoint.forward * PlayerInputValue.y + CamTargetPoint.right * PlayerInputValue.x;
 
-        if (MoveDirection.magnitude > 0.1f)
+        if (PlayerVelocity.magnitude > 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(MoveDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(PlayerVelocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
         }
 
@@ -62,13 +53,9 @@ public class PlayerScript : MonoBehaviour
             VerticalVelocity += Gravity * Time.deltaTime;
         }
 
-
-        PlayerVelocity = MoveDirection * PlayerMovementSpeed;
         PlayerVelocity.y = VerticalVelocity;
 
-
-        CharController.Move(PlayerVelocity * Time.deltaTime);
-
+        CharController.Move(PlayerVelocity * PlayerMovementSpeed * Time.deltaTime);
 
         //============================================================
 
@@ -77,9 +64,9 @@ public class PlayerScript : MonoBehaviour
             TileObject.ActivateTheTile();
         }
 
+        //==========================================================================
 
-
-        if (_input.FlagButton && TileObject != null)
+        if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated)
         {
             if (TileObject.TileIsFlagged)
             {
@@ -92,11 +79,6 @@ public class PlayerScript : MonoBehaviour
                 TileObject.PlaceTheFlag();
             }
         }
-
-
-      
-
-
     }
 
     private void OnTriggerEnter(Collider other)
