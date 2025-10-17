@@ -178,6 +178,17 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""8c25195b-9323-4385-9547-70e704387af2"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""e69dc09a-f2e3-4c3a-9e39-added76847d3"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -189,8 +200,30 @@ public partial class @PlayerInputMap: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""11d77acc-6bfa-4d80-a028-de50888a777b"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dig"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""caf7f777-0dba-4729-b017-2caafa7fee90"",
                     ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlantAFlag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""133e1396-73c9-42b1-bc06-73c9d991d9ef"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
