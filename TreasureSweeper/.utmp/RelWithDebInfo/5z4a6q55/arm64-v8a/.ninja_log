@@ -1,0 +1,10 @@
+# ninja log v5
+21	838	7826120961335749	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	adb21cff11430629
+15	842	7826120961381002	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	4be7561a97f6df6d
+6	859	7826120961576866	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	2b765324940fee29
+40	869	7826120961667162	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	e8681d57255555c5
+10	904	7826120962023533	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	d706e64e7aa40187
+27	1031	7826120963285242	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	d3d60db1a3365d27
+34	1033	7826120963320403	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	cfe216bde3c35f7f
+1	1109	7826120964048670	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	eead6fa5f3b7212f
+1109	1193	7826120964931759	D:/UniWork/Uni-Mobile-Game-Project/TreasureSweeper/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/5z4a6q55/obj/arm64-v8a/libgame.so	517028d96b3bf359

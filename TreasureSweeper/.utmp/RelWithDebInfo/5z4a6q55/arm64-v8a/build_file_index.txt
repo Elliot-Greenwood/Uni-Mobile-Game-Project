@@ -1,0 +1,2 @@
+D:\UniWork\Uni-Mobile-Game-Project\TreasureSweeper\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\UniWork\Uni-Mobile-Game-Project\TreasureSweeper\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
