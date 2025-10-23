@@ -111,8 +111,7 @@ public class TileScript : MonoBehaviour
 
             if (TileIsActivated && TileIsBomb)
             {
-                //game over.
-                Debug.Log("GAME OVER!!!");
+                ActionsListener.OnDiggingUpMine();
             }
 
             if (HowManyMinesInArea == 0)
@@ -127,35 +126,51 @@ public class TileScript : MonoBehaviour
                 }
             }
 
+           //if (HowManyMinesInArea != 0)
+           //{
+           //    foreach (TileScript tile in SurroundingTiles)
+           //    {
+           //        if (!tile.TileIsBomb && !tile.TileIsActivated && tile.HowManyMinesInArea == 0)
+           //        {
+           //            tile.TileIsActivated = true;
+           //            tile.ActivateTheTile();
+           //        }
+           //    }
+           //}
+
         }
     }
 
     public void PlaceTheFlag()
     {
-        TileIsFlagged = true;
-        Flag.SetActive(true);
-
-        if (TileIsBomb && TileIsFlagged)
+        if (MineManagerScript.Flags > 0)
         {
-            TileIsComplete = true;
-            MineManagerScript.MinesFlaggedCorrectly++;
-        }
+            TileIsFlagged = true;
+            Flag.SetActive(true);
+            ActionsListener.OnFlagPlace();
 
-        if (MineManagerScript.TotalMinesInMap == MineManagerScript.MinesFlaggedCorrectly)
-        {
-            //Win Game
-            Debug.Log("GAME COMPLETED!!!");
+            if (TileIsBomb && TileIsFlagged)
+            {
+                TileIsComplete = true;
+                ActionsListener.OnFlagPlaceOnMine();
+            }
         }
+        else
+        {
+            //display No more Flags
+        }
+       
     }
     public void RemoveTheFlag()
     {
         TileIsFlagged = false;
         Flag.SetActive(false);
+        ActionsListener.OnFlagRemove();
 
         if (TileIsComplete)
         {
             TileIsComplete = false;
-            MineManagerScript.MinesFlaggedCorrectly--;
+            ActionsListener.OnFlagRemoveOffMine();
         }
 
     }
