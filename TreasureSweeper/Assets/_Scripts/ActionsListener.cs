@@ -11,4 +11,6 @@ public static class ActionsListener
     public static Action OnFlagRemove;
 
     public static Action OnDiggingUpMine;
+
+    public static Action OnAllMinesFlaggedCorrectly;
 }

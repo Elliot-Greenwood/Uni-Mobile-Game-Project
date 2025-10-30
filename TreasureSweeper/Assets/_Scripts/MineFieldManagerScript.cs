@@ -76,10 +76,14 @@ public class MineFieldManagerScript : MonoBehaviour
     private void Update()
     {
         if (!IsGameComplete &&TotalMinesInMap == MinesFlaggedCorrectly)
-        {
+        { 
+
             IsGameComplete = true;
             GameCompleteUI.SetActive(true);
             //Game Win
+
+            ActionsListener.OnAllMinesFlaggedCorrectly();
+
         }
     }
 
@@ -97,8 +101,8 @@ public class MineFieldManagerScript : MonoBehaviour
     void Tile_Flagged()
     {
         
-            Flags--;
-            FlagsTextUI.text = Flags.ToString();
+        Flags--;
+        FlagsTextUI.text = Flags.ToString();
         
     }
     void Tile_Unflagged()

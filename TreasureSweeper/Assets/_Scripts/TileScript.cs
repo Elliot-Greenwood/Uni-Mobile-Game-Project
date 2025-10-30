@@ -28,10 +28,19 @@ public class TileScript : MonoBehaviour
     public Material TileCoverMatIdle;
     public Material TileCoverMatOnstep;
 
-
-
-
     Renderer MaterialRendered;
+
+    void OnEnable()
+    {
+        ActionsListener.OnAllMinesFlaggedCorrectly += OpenAllMinesAfterWin;
+    }
+    void OnDisable()
+    {
+        ActionsListener.OnAllMinesFlaggedCorrectly -= OpenAllMinesAfterWin;
+    }
+
+
+
 
     private void Start()
     {
@@ -39,11 +48,11 @@ public class TileScript : MonoBehaviour
 
         MaterialRendered = GetComponent<Renderer>();
 
-        Invoke("InitTileCheck", 0.1f);
+        Invoke("InitTileMaterialCheck", 0.1f);
     }
 
 
-    void InitTileCheck()
+    void InitTileMaterialCheck()
     {
         if (!TileIsBomb)
         {
@@ -173,6 +182,16 @@ public class TileScript : MonoBehaviour
             ActionsListener.OnFlagRemoveOffMine();
         }
 
+    }
+
+
+    public void OpenAllMinesAfterWin()
+    {
+        if (!TileIsBomb)
+        {
+            TileIsActivated = true;
+            TileCover.SetActive(false);
+        }
     }
 
 }
