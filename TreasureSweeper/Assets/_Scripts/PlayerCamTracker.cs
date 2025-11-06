@@ -3,16 +3,22 @@ using UnityEngine;
 public class PlayerCamTracker : MonoBehaviour
 {
     [SerializeField] Transform Player;
-    float DampingValue = 2.5f;
 
-    public float Z;
+    [Header("Damping Settings")]
+    float DampingX = 8f;
+    float DampingZ = 2f;
 
-    Vector3 NewPos = Vector3.zero;
+    Vector3 targetPos;
+
     private void Update()
     {
-        Z = Player.position.z - 5f;
+        
+        targetPos = new Vector3(Player.position.x, transform.position.y, Player.position.z - 5f);
 
-        NewPos = new Vector3(Player.position.x, transform.position.y, Z);
-        transform.position = Vector3.Lerp(transform.position, NewPos, DampingValue * Time.deltaTime);
+        
+        float newX = Mathf.Lerp(transform.position.x, targetPos.x, DampingX * Time.deltaTime);
+        float newZ = Mathf.Lerp(transform.position.z, targetPos.z, DampingZ * Time.deltaTime);
+
+        transform.position = new Vector3(newX, transform.position.y, newZ);
     }
 }

@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class MineFieldManagerScript : MonoBehaviour
 {
     public TileScript[] MineFieldTiles;
-    public int TotalMinesInMap = 0;
+    public int SetAmmountOfMines = 12;
     public int MinesFlaggedCorrectly = 0;
     public int Flags = 0;
 
-
+    public bool MinesHaveBeenRandomized = false;
     bool IsGameComplete = false;
     bool IsGameOver = false;
 
@@ -51,41 +52,64 @@ public class MineFieldManagerScript : MonoBehaviour
         GameOverUI.SetActive(false);
         GameCompleteUI.SetActive(false);
 
-
-
-        foreach (TileScript Tile in MineFieldTiles)
-        {
-            Tile.TileIsBomb = Random.value < 0.15f; // 0.0f to 1.0f => 0% to 100% chance.
-        }
-
-        foreach (TileScript Tile in MineFieldTiles)
-        {
-            if (Tile.TileIsBomb)
-            {
-                TotalMinesInMap++;
-            }
-        }
-
-        Flags = TotalMinesInMap;
+        Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
-        
-
     }
 
 
     private void Update()
     {
-        if (!IsGameComplete &&TotalMinesInMap == MinesFlaggedCorrectly)
+        if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly)
         { 
-
             IsGameComplete = true;
             GameCompleteUI.SetActive(true);
             //Game Win
 
             ActionsListener.OnAllMinesFlaggedCorrectly();
-
         }
     }
+
+
+    public void RandomizeTheMineField(TileScript FirstActivatedTile)
+    {
+        if (MinesHaveBeenRandomized) return;
+
+        MinesHaveBeenRandomized = true;
+
+        List<TileScript> RemainingTiles = new List<TileScript>(MineFieldTiles);
+        RemainingTiles.Remove(FirstActivatedTile);
+
+        for (int i = 0; i < RemainingTiles.Count; i++)
+        {
+            TileScript Temp = RemainingTiles[i];
+            int RNG = Random.Range(i, RemainingTiles.Count);
+            RemainingTiles[i] = RemainingTiles[RNG];
+            RemainingTiles[RNG] = Temp;
+        }
+
+
+        int HowManyMinesToPlace = Mathf.Clamp(SetAmmountOfMines, 0, RemainingTiles.Count);
+
+        for (int i = 0; i < HowManyMinesToPlace; i++)
+        {
+            RemainingTiles[i].TileIsBomb = true;
+        }
+
+
+        Flags = SetAmmountOfMines;
+        FlagsTextUI.text = Flags.ToString();
+
+
+        foreach (TileScript tile in MineFieldTiles)
+        {
+            tile.InitTileMaterialCheck();
+        }
+
+    }
+
+
+
+
 
 
 
