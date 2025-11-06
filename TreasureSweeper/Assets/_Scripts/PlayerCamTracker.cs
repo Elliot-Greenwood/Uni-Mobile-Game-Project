@@ -5,15 +5,15 @@ public class PlayerCamTracker : MonoBehaviour
     [SerializeField] Transform Player;
 
     [Header("Damping Settings")]
-    float DampingX = 8f;
-    float DampingZ = 2f;
+    float DampingX = 7f;
+    float DampingZ = 3f;
 
     Vector3 targetPos;
 
     private void Update()
     {
         
-        targetPos = new Vector3(Player.position.x, transform.position.y, Player.position.z - 5f);
+        targetPos = new Vector3(Player.position.x, transform.position.y, Player.position.z - 2f);
 
         
         float newX = Mathf.Lerp(transform.position.x, targetPos.x, DampingX * Time.deltaTime);
