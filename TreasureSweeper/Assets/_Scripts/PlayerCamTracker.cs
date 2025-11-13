@@ -7,13 +7,15 @@ public class PlayerCamTracker : MonoBehaviour
     [Header("Damping Settings")]
     float DampingX = 7f;
     float DampingZ = 3f;
+    [SerializeField]float Zoffset = 4f;
 
     Vector3 targetPos;
+
 
     private void Update()
     {
         
-        targetPos = new Vector3(Player.position.x, transform.position.y, Player.position.z - 2f);
+        targetPos = new Vector3(Player.position.x, transform.position.y, Player.position.z - Zoffset);
 
         
         float newX = Mathf.Lerp(transform.position.x, targetPos.x, DampingX * Time.deltaTime);

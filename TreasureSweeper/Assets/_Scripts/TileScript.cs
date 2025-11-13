@@ -48,6 +48,9 @@ public class TileScript : MonoBehaviour
 
         MaterialRendered = GetComponent<Renderer>();
 
+        Flag.SetActive(false);
+        //Mine.SetActive(false);
+
     }
 
 
