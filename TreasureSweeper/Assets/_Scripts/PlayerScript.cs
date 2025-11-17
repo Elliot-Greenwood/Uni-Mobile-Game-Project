@@ -9,7 +9,7 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] Transform CamTargetPoint;
 
-    public float PlayerMovementSpeed = 5f;
+    float PlayerMovementSpeed = 8f;
     public float RotationSpeed = 50f;
     public float Gravity = -9.81f;
 
@@ -34,7 +34,7 @@ public class PlayerScript : MonoBehaviour
     private void Update()
     {
 
-        PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y);
+        PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y).normalized;
         PlayerVelocity = CamTargetPoint.forward * PlayerInputValue.y + CamTargetPoint.right * PlayerInputValue.x;
 
         if (PlayerVelocity.magnitude > 0.1f)

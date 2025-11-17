@@ -246,7 +246,4 @@ public class TileScript : MonoBehaviour
         return northSouth || eastWest;
     }
 
-
-
-
 }

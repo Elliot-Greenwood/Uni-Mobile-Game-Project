@@ -138,6 +138,7 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Dug_Up()
     {
         GameOverUI.SetActive(true);
+        PhoneVibration.ExplosionVibration();
     }
 
 

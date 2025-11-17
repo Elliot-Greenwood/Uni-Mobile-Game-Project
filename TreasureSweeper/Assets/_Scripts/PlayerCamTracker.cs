@@ -23,4 +23,11 @@ public class PlayerCamTracker : MonoBehaviour
 
         transform.position = new Vector3(newX, transform.position.y, newZ);
     }
+
+
+
+
+
+
+
 }
