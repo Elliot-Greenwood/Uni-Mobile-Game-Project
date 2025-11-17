@@ -3,17 +3,35 @@ using UnityEngine;
 public class GyroCameraTiltScript : MonoBehaviour
 {
     [Header("Tilt Settings")]
-    public float MaxTiltX = 10f;
-    public float MaxTiltZ = 10f;
-    public float Smooth = 3f;
+    public float MaxTiltUpDown = 15f;
+    public float MaxTiltSides = 30f;
+    public float Xoffset = 55f; //75f if not inverted
+    public float TiltDamper = 3f;
+
+    private Quaternion DefaultRotation;
+    private Quaternion DefaultGyroRotation;
+
+    private void Start()
+    {
+        DefaultGyroRotation = Quaternion.Euler(Xoffset, 0f, 0f);
+        //if no gyro
+        //DefaultRotation = Quaternion.Euler(65f, 0f, 0f);
+        //transform.localRotation = DefaultRotation;
+    }
 
     void Update()
     {
-        Vector3 gyro = Input.acceleration; // device tilt
-        float tiltX = Mathf.Clamp(gyro.x * MaxTiltX, -MaxTiltX, MaxTiltX);
-        float tiltZ = Mathf.Clamp(gyro.y * MaxTiltZ, -MaxTiltZ, MaxTiltZ);
+        
+        Vector3 GyroInput = Input.acceleration;
 
-        Quaternion targetRot = Quaternion.Euler(tiltZ, 0f, -tiltX);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRot, Smooth * Time.deltaTime);
+        float TiltUpDown = Mathf.Clamp(-GyroInput.y * MaxTiltUpDown, -MaxTiltUpDown, MaxTiltUpDown);
+        float TiltToSides = Mathf.Clamp(GyroInput.x * MaxTiltSides, -MaxTiltSides, MaxTiltSides);
+
+        Quaternion QuatUpDown = Quaternion.AngleAxis(TiltUpDown, Vector3.right);
+        Quaternion QuatSides = Quaternion.AngleAxis(TiltToSides, Vector3.up);   
+
+        Quaternion TargetRotation = DefaultGyroRotation * QuatSides * QuatUpDown;
+
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, TargetRotation, TiltDamper * Time.deltaTime);
     }
 }
