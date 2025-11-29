@@ -1810,7 +1810,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 670
+  m_VersionIndex: 697
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1917,14 +1917,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1064712753438458351}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2831754243972623919}
   m_Father: {fileID: 8172075542687666732}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &6172949964251420905
 Animator:
   serializedVersion: 7
@@ -2014,13 +2014,14 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 8cbe134a90ef2ff4dbf3ef46823668a0, type: 2}
   - {fileID: 2100000, guid: eab2a49ce50bf2c46b0e2116f44817af, type: 2}
   - {fileID: 2100000, guid: 427b88ebb8ec142448c968666401a08b, type: 2}
-  MineMat: {fileID: 2100000, guid: d90946fbe2ef0e54e98219152fd9f598, type: 2}
+  MineMat: {fileID: 2100000, guid: b2692f96ac34a9641a24047f09876ed7, type: 2}
   TileCover: {fileID: 5187278274238031847}
   Flag: {fileID: 1064712753438458351}
   Mine: {fileID: 0}
   TileCoverMaterialRendered: {fileID: 5294329242747027185}
   TileCoverMatIdle: {fileID: 2100000, guid: 2f4b8c634b05bbe4789dc7debd877a77, type: 2}
   TileCoverMatOnstep: {fileID: 2100000, guid: 459b71534e6ee3643800f100dd953c8c, type: 2}
+  MaterialRendered: {fileID: 5102775491659492414}
 --- !u!65 &5142468585420959914
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3198,7 +3199,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 732
+  m_VersionIndex: 759
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3499,19 +3500,11 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 259
+  m_VersionIndex: 286
   m_IsSelectable: 1
-  m_SelectedFaces: 00000000
-  m_SelectedEdges:
-  - a: 0
-    b: 0
-  - a: 0
-    b: 0
-  - a: 0
-    b: 0
-  - a: 0
-    b: 0
-  m_SelectedVertices: 00000000000000000000000000000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!114 &976224501932231932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3829,7 +3822,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 80
+  m_VersionIndex: 107
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

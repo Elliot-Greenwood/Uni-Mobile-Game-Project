@@ -28,7 +28,7 @@ public class TileScript : MonoBehaviour
     public Material TileCoverMatIdle;
     public Material TileCoverMatOnstep;
 
-    Renderer MaterialRendered;
+    [SerializeField] Renderer MaterialRendered;
 
     void OnEnable()
     {
@@ -46,7 +46,7 @@ public class TileScript : MonoBehaviour
     {
         MineManagerScript = GameObject.FindWithTag("MineFieldManager").GetComponent<MineFieldManagerScript>();
 
-        MaterialRendered = GetComponent<Renderer>();
+       
 
         Flag.SetActive(false);
         //Mine.SetActive(false);
@@ -133,7 +133,43 @@ public class TileScript : MonoBehaviour
 
             if (HowManyMinesInArea == 0)
             {
-                StartCoroutine(RevealTilesGradually());
+                Invoke("Open_NSEW_Tiles", 0.2f);
+                Invoke("Open_NEWSEW_Tiles", 0.45f);
+
+            }
+        }
+    }
+
+    void Open_NSEW_Tiles()
+    {
+        foreach (TileScript tile in SurroundingTiles)
+        {
+           
+            if (tile.TileIsActivated || tile.TileIsFlagged)
+            {
+                continue;
+            }
+
+            if (Mathf.Approximately(tile.transform.position.x, transform.position.x) ||
+                Mathf.Approximately(tile.transform.position.z, transform.position.z))
+            {
+                tile.ActivateTheTile();
+            }
+        }
+    }
+    void Open_NEWSEW_Tiles()
+    {
+        foreach (TileScript tile in SurroundingTiles)
+        {
+            if (tile.TileIsActivated || tile.TileIsFlagged)
+            {
+                continue;
+            }
+
+            if (!Mathf.Approximately(tile.transform.position.x, transform.position.x) &&
+                !Mathf.Approximately(tile.transform.position.z, transform.position.z))
+            {
+                tile.ActivateTheTile();
             }
         }
     }
@@ -183,67 +219,5 @@ public class TileScript : MonoBehaviour
     }
 
 
-    IEnumerator RevealTilesGradually()
-    {
-        HashSet<TileScript> visited = new HashSet<TileScript>();
-        Queue<TileScript> currentWave = new Queue<TileScript>();
-        Queue<TileScript> nextWave = new Queue<TileScript>();
-
-        visited.Add(this);
-        currentWave.Enqueue(this);
-
-        while (currentWave.Count > 0)
-        {
-            // Reveal all tiles in this wave
-            while (currentWave.Count > 0)
-            {
-                TileScript current = currentWave.Dequeue();
-
-                // reveal the tile (even if already open, it’s fine)
-                current.TileIsActivated = true;
-                current.TileCover.SetActive(false);
-
-                // Only spread from empty tiles
-                if (current.HowManyMinesInArea == 0)
-                {
-                    foreach (TileScript neighbor in current.SurroundingTiles)
-                    {
-                        if (neighbor.TileIsBomb || neighbor.TileIsFlagged || visited.Contains(neighbor))
-                            continue;
-
-                        // Only NSEW spread
-                        if (IsCardinalNeighbor(current, neighbor))
-                        {
-                            visited.Add(neighbor);
-                            nextWave.Enqueue(neighbor);
-                        }
-                    }
-                }
-            }
-
-            // Wait before revealing the next ring
-            yield return new WaitForSeconds(0.15f);
-
-            // Move next layer to current
-            (currentWave, nextWave) = (nextWave, new Queue<TileScript>());
-        }
-    }
-
-
-
-    bool IsCardinalNeighbor(TileScript center, TileScript neighbor)
-    {
-        Vector3 delta = neighbor.transform.position - center.transform.position;
-        delta.y = 0f;
-
-        float dx = Mathf.Abs(delta.x);
-        float dz = Mathf.Abs(delta.z);
-        float tolerance = 0.6f; // good for irregular grid spacing
-
-        bool northSouth = dx < tolerance && dz > tolerance;
-        bool eastWest = dz < tolerance && dx > tolerance;
-
-        return northSouth || eastWest;
-    }
 
 }
