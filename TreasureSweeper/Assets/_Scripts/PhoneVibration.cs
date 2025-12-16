@@ -28,6 +28,18 @@ public static class PhoneVibration
         }
     }
 
+    public static void FlagPlantVibration(long Milliseconds = 50)
+    {
+        if (IsAndroid())
+        {
+            vibrator.Call("vibrate", Milliseconds);
+        }
+        else
+        {
+            Handheld.Vibrate();
+        }
+    }
+
     //=====================================================================
     public static void Cancel()
     {

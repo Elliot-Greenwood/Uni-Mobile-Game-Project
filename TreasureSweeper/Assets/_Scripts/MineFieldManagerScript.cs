@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 
 public class MineFieldManagerScript : MonoBehaviour
 {
     public TileScript[] MineFieldTiles;
-    public int SetAmmountOfMines = 12;
+    public int SetAmmountOfMines = 0;
     public int MinesFlaggedCorrectly = 0;
     public int Flags = 0;
 
@@ -13,8 +15,10 @@ public class MineFieldManagerScript : MonoBehaviour
     bool IsGameComplete = false;
     bool IsGameOver = false;
 
-    [SerializeField] GameObject GameOverUI;
-    [SerializeField] GameObject GameCompleteUI;
+    [SerializeField] GameObject InputUIHUD;
+
+    [SerializeField] GameObject LevelCompleteUI;
+    [SerializeField] GameObject LevelFailedUI;
 
     [SerializeField] Text FlagsTextUI = null;
 
@@ -49,9 +53,6 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void Start()
     {
-        GameOverUI.SetActive(false);
-        GameCompleteUI.SetActive(false);
-
         Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
     }
@@ -59,14 +60,7 @@ public class MineFieldManagerScript : MonoBehaviour
 
     private void Update()
     {
-        if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly)
-        { 
-            IsGameComplete = true;
-            GameCompleteUI.SetActive(true);
-            //Game Win
-
-            ActionsListener.OnAllMinesFlaggedCorrectly();
-        }
+       
     }
 
 
@@ -116,6 +110,16 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Flagged_Correctly()
     {
         MinesFlaggedCorrectly++;
+        PhoneVibration.FlagPlantVibration();
+
+        if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly)
+        {
+            IsGameComplete = true;
+            LevelCompleteUI.SetActive(true);
+            //Game Win
+            InputUIHUD.SetActive(false);
+            ActionsListener.OnAllMinesFlaggedCorrectly();
+        }
     }
 
     void Mine_Was_Unflagged()
@@ -137,9 +141,25 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void Mine_Was_Dug_Up()
     {
-        GameOverUI.SetActive(true);
+        LevelFailedUI.SetActive(true);
         PhoneVibration.ExplosionVibration();
     }
+
+    //==============================================================
+    //BUTTONS
+    //==============================================================
+
+    public void ResetLevelButton()
+    { 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void ReturnToMenuButton()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
+
 
 
 }

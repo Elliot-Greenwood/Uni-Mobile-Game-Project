@@ -3,13 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
-    
+    //[SerializeField] GameObject GameTitle;
     [SerializeField] GameObject ReturnButtonUI;
-    [SerializeField] GameObject GameModeUI_GM;
-    [SerializeField] GameObject NormalSweeperSelectionUI_NMS;
-    [SerializeField] GameObject BookLevelSelectionUI_TS;
-    [SerializeField] GameObject Book1;
-    [SerializeField] GameObject LevelSelectionUI;
+    [SerializeField] GameObject MainMenuSelection;
+    [SerializeField] GameObject NormalSweeperSelection;
+    [SerializeField] GameObject BookLevelSelection;
+    [SerializeField] GameObject TS_Book1;
+    
 
 
     bool InMainSelection = true;
@@ -17,44 +17,66 @@ public class MainMenuScript : MonoBehaviour
     bool InUILayer2 = false;
 
 
-
-    void Start()
+    private void Start()
     {
-        
+        MainMenuSelection.SetActive(true);
+        ReturnButtonUI.SetActive(false);
     }
-    void Update()
-    {
-        
-    }
-
-
-
-
 
     public void ReturnButton()
     {
         
+        if (InUILayer1 && !InUILayer2)
+        {
+            InUILayer1 = false;
+            ReturnButtonUI.SetActive(false);
+            MainMenuSelection.SetActive(true);
+
+            if (NormalSweeperSelection.activeInHierarchy)
+            {
+                NormalSweeperSelection.SetActive(false);
+            }
+            if (BookLevelSelection.activeInHierarchy)
+            {
+                BookLevelSelection.SetActive(false);
+            }
+        }
+
+        if (InUILayer2 && InUILayer1)
+        {
+            InUILayer2 = false; 
+            ReturnButtonUI.SetActive(true);
+
+            if (TS_Book1.activeInHierarchy)
+            {
+                TS_Book1.SetActive(false);
+                BookLevelSelection.SetActive(true);
+            }
+
+        }
     }
 
-    
-
-
-
-
-    public void OpenUILayer1()
+    public void OpenNormalSpeeperUI()
     {
         InUILayer1 = true;
+        ReturnButtonUI.SetActive(true);
+        NormalSweeperSelection.SetActive(true);
+        MainMenuSelection.SetActive(false);
+
     }
-    public void OpenUILayer2()
+    public void OpenTreasureSpeeperUI()
+    {
+        InUILayer1 = true;
+        ReturnButtonUI.SetActive(true);
+        BookLevelSelection.SetActive(true);
+        MainMenuSelection.SetActive(false);
+    }
+
+    public void OpenBook1UI()
     {
         InUILayer2 = true;
-    }
-
-
-
-    public void LoadLevel(string SceneName)
-    {
-        SceneManager.LoadScene(SceneName);
+        TS_Book1.SetActive(true);
+        BookLevelSelection.SetActive(false);
     }
 
 
