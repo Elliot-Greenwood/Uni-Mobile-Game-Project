@@ -145,20 +145,6 @@ public class MineFieldManagerScript : MonoBehaviour
         PhoneVibration.ExplosionVibration();
     }
 
-    //==============================================================
-    //BUTTONS
-    //==============================================================
-
-    public void ResetLevelButton()
-    { 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void ReturnToMenuButton()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
-
-
 
 
 

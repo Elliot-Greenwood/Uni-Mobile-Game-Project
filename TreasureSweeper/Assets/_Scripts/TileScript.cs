@@ -48,7 +48,7 @@ public class TileScript : MonoBehaviour
 
        
 
-        Flag.SetActive(false);
+        //Flag.SetActive(false);
         //Mine.SetActive(false);
 
     }
