@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 
 public class MineFieldManagerScript : MonoBehaviour
 {
@@ -12,8 +11,10 @@ public class MineFieldManagerScript : MonoBehaviour
     public int Flags = 0;
 
     public bool MinesHaveBeenRandomized = false;
-    bool IsGameComplete = false;
-    bool IsGameOver = false;
+    public bool IsGameComplete = false;
+
+    [SerializeField] GameObject PlayerFlag;
+
 
     [SerializeField] GameObject InputUIHUD;
 
@@ -131,18 +132,28 @@ public class MineFieldManagerScript : MonoBehaviour
         
         Flags--;
         FlagsTextUI.text = Flags.ToString();
-        
+        if (Flags == 0)
+        {
+            PlayerFlag.SetActive(false);
+        }
+
     }
     void Tile_Unflagged()
     {
         Flags++;
         FlagsTextUI.text = Flags.ToString();
+        if (Flags > 0)
+        {
+            PlayerFlag.SetActive(true);
+        }
     }
 
     void Mine_Was_Dug_Up()
     {
+        IsGameComplete = true;
         LevelFailedUI.SetActive(true);
         PhoneVibration.ExplosionVibration();
+        InputUIHUD.SetActive(false);
     }
 
 

@@ -1,21 +1,27 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
     InputSub _input;
     CharacterController CharController;
+    [SerializeField] MineFieldManagerScript GameManager;
+    [SerializeField] Animator Anim;
 
     [SerializeField] Transform CamTargetPoint;
 
-    float PlayerMovementSpeed = 8f;
-    public float RotationSpeed = 50f;
-    public float Gravity = -9.81f;
+    float PlayerMovementSpeed = 7f;
+    float RotationSpeed = 15f;
+    float Gravity = -9.81f;
 
     Vector2 PlayerInputValue = Vector2.zero;
     Vector3 PlayerVelocity = Vector3.zero;
     float VerticalVelocity = 0f;
+    [SerializeField] bool CanMove = true;
 
+
+    float FlagInputDelay = 0f;
 
     TileScript TileObject = null;
     //bool PlayerIsOnTile = false;
@@ -32,29 +38,42 @@ public class PlayerScript : MonoBehaviour
 
     private void Update()
     {
-
-        PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y).normalized;
-        PlayerVelocity = CamTargetPoint.forward * PlayerInputValue.y + CamTargetPoint.right * PlayerInputValue.x;
-
-        if (PlayerVelocity.magnitude > 0.1f)
+        if (!GameManager.IsGameComplete && CanMove)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(PlayerVelocity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+            PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y).normalized;
+            PlayerVelocity = CamTargetPoint.forward * PlayerInputValue.y + CamTargetPoint.right * PlayerInputValue.x;
+
+            if (PlayerInputValue != Vector2.zero)
+            {
+                Anim.SetBool("PlayerIsMoving", true);
+            }
+            else 
+            { 
+                Anim.SetBool("PlayerIsMoving", false); 
+            }
+
+
+
+            if (PlayerVelocity.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(PlayerVelocity);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, RotationSpeed * Time.deltaTime);
+            }
+
+
+            if (CharController.isGrounded)
+            {
+                VerticalVelocity = -1f;
+            }
+            else
+            {
+                VerticalVelocity += Gravity * Time.deltaTime;
+            }
+
+            PlayerVelocity.y = VerticalVelocity;
+
+            CharController.Move(PlayerVelocity * PlayerMovementSpeed * Time.deltaTime);
         }
-
-
-        if (CharController.isGrounded)
-        {
-            VerticalVelocity = -1f;
-        }
-        else
-        {
-            VerticalVelocity += Gravity * Time.deltaTime;
-        }
-
-        PlayerVelocity.y = VerticalVelocity;
-
-        CharController.Move(PlayerVelocity * PlayerMovementSpeed * Time.deltaTime);
 
         //============================================================
 
@@ -65,20 +84,49 @@ public class PlayerScript : MonoBehaviour
 
         //==========================================================================
 
-        if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated)
+        if (FlagInputDelay > 0)
         {
+            FlagInputDelay -= Time.deltaTime;
+        }
+
+        if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated && FlagInputDelay <= 0f)
+        {
+            
             if (TileObject.TileIsFlagged)
             {
-                Debug.Log("RemoveFlag");
-                TileObject.RemoveTheFlag();
+                CanMove = false;
+                FlagInputDelay = 1.1f;
+                Anim.SetTrigger("PlayerUnflagTile");
+                Invoke("InvokeFlagRemoval", 0.5f);
+                Invoke("InvokeMovement", 1f);
             }
-            else
+            else if(!TileObject.TileIsFlagged && GameManager.Flags > 0)
             {
-                Debug.Log("PlacedAFlag");
-                TileObject.PlaceTheFlag();
+                CanMove = false;
+                FlagInputDelay = 1.1f;
+                Anim.SetTrigger("PlayerFlagTile");
+                Invoke("InvokeFlagPlacement", 0.6f);
+                Invoke("InvokeMovement", 1f);
             }
         }
     }
+
+    void InvokeFlagPlacement()
+    {
+        TileObject.PlaceTheFlag();
+    }
+
+    void InvokeFlagRemoval()
+    {
+        TileObject.RemoveTheFlag();
+    }
+
+    void InvokeMovement()
+    {
+        CanMove = true;
+    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {
