@@ -113,15 +113,19 @@ public class MineFieldManagerScript : MonoBehaviour
         MinesFlaggedCorrectly++;
         PhoneVibration.FlagPlantVibration();
 
-        if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly)
+        if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly) //Game Win
         {
             IsGameComplete = true;
-            LevelCompleteUI.SetActive(true);
-            //Game Win
+            Invoke("InvokeLevelCompleteUI", 3f);
             InputUIHUD.SetActive(false);
             ActionsListener.OnAllMinesFlaggedCorrectly();
         }
     }
+    void InvokeLevelCompleteUI()
+    {
+        LevelCompleteUI.SetActive(true);
+    }
+
 
     void Mine_Was_Unflagged()
     {
@@ -150,13 +154,19 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void Mine_Was_Dug_Up()
     {
+        //HANDLE DEATH HERE
+
+
         IsGameComplete = true;
-        LevelFailedUI.SetActive(true);
+        Invoke("InvokeDeathUI", 3f);
         PhoneVibration.ExplosionVibration();
         InputUIHUD.SetActive(false);
     }
 
-
+    void InvokeDeathUI()
+    {
+        LevelFailedUI.SetActive(true);
+    }
 
 
 }

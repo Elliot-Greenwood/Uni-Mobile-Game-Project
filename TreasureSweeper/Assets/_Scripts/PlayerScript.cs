@@ -21,7 +21,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] bool CanMove = true;
 
 
-    float FlagInputDelay = 0f;
+    float ActionDelay = 0f;
 
     TileScript TileObject = null;
     //bool PlayerIsOnTile = false;
@@ -77,25 +77,29 @@ public class PlayerScript : MonoBehaviour
 
         //============================================================
 
-        if (TileObject != null && _input.DigButton)
+        if (TileObject != null && _input.DigButton && ActionDelay <= 0f) //add !TileObject.TileIsActivated if it bothers that dig is performed still with active tile
         {
-            TileObject.ActivateTheTile();
+            ActionDelay = 1.1f;
+            CanMove = false;
+            Anim.SetTrigger("PlayerDigTile");
+            Invoke("InvokeDigAction", 0.5f);
+            Invoke("InvokeMovement", 1f);
         }
 
         //==========================================================================
 
-        if (FlagInputDelay > 0)
+        if (ActionDelay > 0)
         {
-            FlagInputDelay -= Time.deltaTime;
+            ActionDelay -= Time.deltaTime;
         }
 
-        if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated && FlagInputDelay <= 0f)
+        if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated && ActionDelay <= 0f)
         {
             
             if (TileObject.TileIsFlagged)
             {
                 CanMove = false;
-                FlagInputDelay = 1.1f;
+                ActionDelay = 1.1f;
                 Anim.SetTrigger("PlayerUnflagTile");
                 Invoke("InvokeFlagRemoval", 0.5f);
                 Invoke("InvokeMovement", 1f);
@@ -103,7 +107,7 @@ public class PlayerScript : MonoBehaviour
             else if(!TileObject.TileIsFlagged && GameManager.Flags > 0)
             {
                 CanMove = false;
-                FlagInputDelay = 1.1f;
+                ActionDelay = 1.1f;
                 Anim.SetTrigger("PlayerFlagTile");
                 Invoke("InvokeFlagPlacement", 0.6f);
                 Invoke("InvokeMovement", 1f);
@@ -125,7 +129,10 @@ public class PlayerScript : MonoBehaviour
     {
         CanMove = true;
     }
-
+    void InvokeDigAction()
+    {
+        TileObject.ActivateTheTile();
+    }
 
 
     private void OnTriggerEnter(Collider other)

@@ -188,11 +188,6 @@ public class TileScript : MonoBehaviour
                 ActionsListener.OnFlagPlaceOnMine();
             }
         }
-        else
-        {
-            //display No more Flags
-        }
-       
     }
     public void RemoveTheFlag()
     {
