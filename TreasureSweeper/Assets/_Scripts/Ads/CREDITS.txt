@@ -2,5 +2,7 @@ YouTube Tutorial was followed to implement these ads.
 
 https://www.youtube.com/watch?v=6jQIeZk72cA
 
+https://www.youtube.com/watch?v=seTvVkaU2dk
+
 Unity Ads scripts:
 https://docs.unity.com/en-us/grow/ads/unity-sdk/banner-ads

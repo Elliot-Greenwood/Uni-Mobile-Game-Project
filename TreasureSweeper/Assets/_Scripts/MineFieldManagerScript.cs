@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class MineFieldManagerScript : MonoBehaviour
 {
+    SetLevelCompletion LevelCompletionScript;
+
     public TileScript[] MineFieldTiles;
     public int SetAmmountOfMines = 0;
     public int MinesFlaggedCorrectly = 0;
@@ -54,8 +57,12 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void Start()
     {
+        LevelCompletionScript = GetComponent<SetLevelCompletion>();
         Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
+
+
+        StartCoroutine(DiplayBannerAdds());
     }
 
 
@@ -124,6 +131,7 @@ public class MineFieldManagerScript : MonoBehaviour
     void InvokeLevelCompleteUI()
     {
         LevelCompleteUI.SetActive(true);
+        LevelCompletionScript.CompleteLevel();
     }
 
 
@@ -161,12 +169,27 @@ public class MineFieldManagerScript : MonoBehaviour
         Invoke("InvokeDeathUI", 3f);
         PhoneVibration.ExplosionVibration();
         InputUIHUD.SetActive(false);
+
+
+        AddManager.Instance.BannerAd.HideBannerAd();
     }
 
     void InvokeDeathUI()
     {
         LevelFailedUI.SetActive(true);
+
+        AddManager.Instance.InterstitialAd.ShowAd();
     }
 
+
+
+
+
+
+    IEnumerator DiplayBannerAdds()
+    {
+        yield return new WaitForSeconds(1f);
+        AddManager.Instance.BannerAd.ShowBannerAd();
+    }
 
 }

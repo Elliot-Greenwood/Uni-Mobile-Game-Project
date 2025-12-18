@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class MainMenuScript : MonoBehaviour
 {
-    //[SerializeField] GameObject GameTitle;
+    [SerializeField] GameObject GameTitle;
     [SerializeField] GameObject ReturnButtonUI;
     [SerializeField] GameObject MainMenuSelection;
     [SerializeField] GameObject NormalSweeperSelection;
@@ -16,7 +17,8 @@ public class MainMenuScript : MonoBehaviour
     bool InUILayer1 = false;
     bool InUILayer2 = false;
 
-
+    
+    
     private void Start()
     {
         MainMenuSelection.SetActive(true);
@@ -49,6 +51,7 @@ public class MainMenuScript : MonoBehaviour
 
             if (TS_Book1.activeInHierarchy)
             {
+                GameTitle.SetActive(true);
                 TS_Book1.SetActive(false);
                 BookLevelSelection.SetActive(true);
             }
@@ -74,11 +77,12 @@ public class MainMenuScript : MonoBehaviour
 
     public void OpenBook1UI()
     {
+        GameTitle.SetActive(false);
         InUILayer2 = true;
         TS_Book1.SetActive(true);
         BookLevelSelection.SetActive(false);
     }
 
-
+  
 
 }
