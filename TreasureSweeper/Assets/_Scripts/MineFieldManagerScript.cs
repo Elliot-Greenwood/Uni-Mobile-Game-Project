@@ -170,7 +170,7 @@ public class MineFieldManagerScript : MonoBehaviour
         PhoneVibration.ExplosionVibration();
         InputUIHUD.SetActive(false);
 
-
+        
         AddManager.Instance.BannerAd.HideBannerAd();
     }
 

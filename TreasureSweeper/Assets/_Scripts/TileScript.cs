@@ -5,6 +5,7 @@ using UnityEngine;
 public class TileScript : MonoBehaviour
 {
     MineFieldManagerScript MineManagerScript;
+    AudioSource SFXPlayer;
 
     [Header("Tile Settings")]
     public bool TileIsBomb = false;
@@ -30,6 +31,8 @@ public class TileScript : MonoBehaviour
 
     [SerializeField] Renderer MaterialRendered;
 
+    [SerializeField] AudioClip DigDirtSoundEffect;
+
     void OnEnable()
     {
         ActionsListener.OnAllMinesFlaggedCorrectly += OpenAllMinesAfterWin;
@@ -45,8 +48,8 @@ public class TileScript : MonoBehaviour
     private void Start()
     {
         MineManagerScript = GameObject.FindWithTag("MineFieldManager").GetComponent<MineFieldManagerScript>();
+        SFXPlayer = GetComponent<AudioSource>();
 
-       
 
         //Flag.SetActive(false);
         //Mine.SetActive(false);
@@ -115,6 +118,10 @@ public class TileScript : MonoBehaviour
 
     public void ActivateTheTile()
     {
+        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+        
+
         if (!TileIsFlagged)
         {
             if (!MineManagerScript.MinesHaveBeenRandomized)
@@ -127,6 +134,7 @@ public class TileScript : MonoBehaviour
 
             if (TileIsActivated && TileIsBomb)
             {
+                Mine.SetActive(true);
                 ActionsListener.OnDiggingUpMine();
                 return;
             }
@@ -176,6 +184,9 @@ public class TileScript : MonoBehaviour
 
     public void PlaceTheFlag()
     {
+        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+
         if (MineManagerScript.Flags > 0)
         {
             TileIsFlagged = true;
@@ -191,6 +202,9 @@ public class TileScript : MonoBehaviour
     }
     public void RemoveTheFlag()
     {
+        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+
         TileIsFlagged = false;
         Flag.SetActive(false);
         ActionsListener.OnFlagRemove();
@@ -210,6 +224,7 @@ public class TileScript : MonoBehaviour
         {
             TileIsActivated = true;
             TileCover.SetActive(false);
+            
         }
     }
 

@@ -75,6 +75,13 @@ public class PlayerScript : MonoBehaviour
             CharController.Move(PlayerVelocity * PlayerMovementSpeed * Time.deltaTime);
         }
 
+        if (!CanMove)
+        {
+            PlayerInputValue = Vector2.zero;
+            CharController.Move(Vector3.zero);
+            Anim.SetBool("PlayerIsMoving", false);
+        }
+
         //============================================================
 
         if (TileObject != null && _input.DigButton && ActionDelay <= 0f) //add !TileObject.TileIsActivated if it bothers that dig is performed still with active tile
@@ -127,7 +134,10 @@ public class PlayerScript : MonoBehaviour
 
     void InvokeMovement()
     {
-        CanMove = true;
+        if (!GameManager.IsGameComplete)
+        {
+            CanMove = true;
+        }
     }
     void InvokeDigAction()
     {
