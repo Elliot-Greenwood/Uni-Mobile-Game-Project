@@ -24,6 +24,7 @@ public class TileScript : MonoBehaviour
     public GameObject TileCover;
     public GameObject Flag;
     public GameObject Mine;
+    public GameObject Coin;
 
     public Renderer TileCoverMaterialRendered;
     public Material TileCoverMatIdle;
@@ -141,6 +142,14 @@ public class TileScript : MonoBehaviour
 
             if (HowManyMinesInArea == 0)
             {
+                int rng = Random.Range(0, 1001);
+
+                if (rng >= 950)
+                {
+                    Coin.SetActive(true);
+                }
+
+
                 Invoke("Open_NSEW_Tiles", 0.2f);
                 Invoke("Open_NEWSEW_Tiles", 0.45f);
 

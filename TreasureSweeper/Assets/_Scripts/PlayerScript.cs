@@ -84,7 +84,7 @@ public class PlayerScript : MonoBehaviour
 
         //============================================================
 
-        if (TileObject != null && _input.DigButton && ActionDelay <= 0f) //add !TileObject.TileIsActivated if it bothers that dig is performed still with active tile
+        if (TileObject != null && _input.DigButton && !TileObject.TileIsActivated && ActionDelay <= 0f) //add !TileObject.TileIsActivated if it bothers that dig is performed still with active tile
         {
             ActionDelay = 1.1f;
             CanMove = false;
@@ -150,6 +150,13 @@ public class PlayerScript : MonoBehaviour
         if (other.gameObject.layer == 7 && TileObject == null)
         {
             TileObject = other.gameObject.GetComponent<TileScript>();
+        }
+
+        if (other.gameObject.layer == 9)
+        {
+            ActionsListener.OnCoinCollected();
+
+            Destroy(other.gameObject);
         }
     }
 

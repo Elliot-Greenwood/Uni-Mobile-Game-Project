@@ -12,6 +12,7 @@ public class MineFieldManagerScript : MonoBehaviour
     public int SetAmmountOfMines = 0;
     public int MinesFlaggedCorrectly = 0;
     public int Flags = 0;
+    public int CoinsCollected = 0;
 
     public bool MinesHaveBeenRandomized = false;
     public bool IsGameComplete = false;
@@ -36,6 +37,8 @@ public class MineFieldManagerScript : MonoBehaviour
         ActionsListener.OnFlagRemove += Tile_Unflagged;
 
         ActionsListener.OnDiggingUpMine += Mine_Was_Dug_Up;
+
+        ActionsListener.OnCoinCollected += Collected_A_Coin;
     }
     private void OnDisable()
     {
@@ -46,6 +49,8 @@ public class MineFieldManagerScript : MonoBehaviour
         ActionsListener.OnFlagRemove -= Tile_Unflagged;
 
         ActionsListener.OnDiggingUpMine -= Mine_Was_Dug_Up;
+
+        ActionsListener.OnCoinCollected -= Collected_A_Coin;
     }
 
 
@@ -60,7 +65,7 @@ public class MineFieldManagerScript : MonoBehaviour
         LevelCompletionScript = GetComponent<SetLevelCompletion>();
         Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
-
+        CoinsCollected = 0;
 
         StartCoroutine(DiplayBannerAdds());
     }
@@ -132,6 +137,9 @@ public class MineFieldManagerScript : MonoBehaviour
     {
         LevelCompleteUI.SetActive(true);
         LevelCompletionScript.CompleteLevel();
+
+        PlayerPrefs.SetInt("GameCurrency", PlayerPrefs.GetInt("GameCurrency") + CoinsCollected);
+        PlayerPrefs.Save();
     }
 
 
@@ -182,7 +190,11 @@ public class MineFieldManagerScript : MonoBehaviour
     }
 
 
+    void Collected_A_Coin()
+    {
+        CoinsCollected++;
 
+    }
 
 
 

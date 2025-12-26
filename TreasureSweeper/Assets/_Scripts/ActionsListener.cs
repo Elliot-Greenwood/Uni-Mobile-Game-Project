@@ -13,4 +13,8 @@ public static class ActionsListener
     public static Action OnDiggingUpMine;
 
     public static Action OnAllMinesFlaggedCorrectly;
+
+
+
+    public static Action OnCoinCollected;
 }

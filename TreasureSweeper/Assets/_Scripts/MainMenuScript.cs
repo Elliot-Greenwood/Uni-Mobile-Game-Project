@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -10,7 +11,9 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] GameObject NormalSweeperSelection;
     [SerializeField] GameObject BookLevelSelection;
     [SerializeField] GameObject TS_Book1;
+    [SerializeField] Text GameCurrentcyText;
     
+
 
 
     bool InMainSelection = true;
@@ -21,8 +24,17 @@ public class MainMenuScript : MonoBehaviour
     
     private void Start()
     {
+        if (PlayerPrefs.GetInt("GameCurrency") == 0) //create memory storage
+        {
+            PlayerPrefs.SetInt("GameCurrency", 0);
+            PlayerPrefs.Save();
+        }
+
+
         MainMenuSelection.SetActive(true);
         ReturnButtonUI.SetActive(false);
+
+        GameCurrentcyText.text = PlayerPrefs.GetInt("GameCurrency").ToString();
     }
 
     public void ReturnButton()
