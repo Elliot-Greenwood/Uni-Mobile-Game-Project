@@ -40,8 +40,22 @@ public static class PhoneVibration
         }
     }
 
-    //=====================================================================
-    public static void Cancel()
+    public static void ButtonVibration(long Milliseconds = 25)
+    {
+        if (IsAndroid())
+        {
+            vibrator.Call("vibrate", Milliseconds);
+        }
+        else
+        {
+            Handheld.Vibrate();
+        }
+    }
+
+
+     
+//=====================================================================
+public static void Cancel()
     {
         if (IsAndroid())
         {

@@ -7,6 +7,7 @@ using System.Collections;
 public class MineFieldManagerScript : MonoBehaviour
 {
     SetLevelCompletion LevelCompletionScript;
+    AudioSource SFXPlayer;
 
     public TileScript[] MineFieldTiles;
     public int SetAmmountOfMines = 0;
@@ -26,6 +27,9 @@ public class MineFieldManagerScript : MonoBehaviour
     [SerializeField] GameObject LevelFailedUI;
 
     [SerializeField] Text FlagsTextUI = null;
+
+
+    [SerializeField] AudioClip WinSound, LoseSound;
 
 
     private void OnEnable()
@@ -62,6 +66,7 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void Start()
     {
+        SFXPlayer = GetComponent<AudioSource>();
         LevelCompletionScript = GetComponent<SetLevelCompletion>();
         Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
@@ -123,18 +128,23 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Flagged_Correctly()
     {
         MinesFlaggedCorrectly++;
-        PhoneVibration.FlagPlantVibration();
+        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        {
+            PhoneVibration.FlagPlantVibration();
+        }
 
         if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly) //Game Win
         {
             IsGameComplete = true;
-            Invoke("InvokeLevelCompleteUI", 3f);
+            Invoke("InvokeLevelCompleteUI", 1f);
             InputUIHUD.SetActive(false);
             ActionsListener.OnAllMinesFlaggedCorrectly();
         }
     }
     void InvokeLevelCompleteUI()
     {
+        SFXPlayer.PlayOneShot(WinSound, 0.5f);
+
         LevelCompleteUI.SetActive(true);
         LevelCompletionScript.CompleteLevel();
 
@@ -171,11 +181,16 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Dug_Up()
     {
         //HANDLE DEATH HERE
-
+       
 
         IsGameComplete = true;
-        Invoke("InvokeDeathUI", 3f);
-        PhoneVibration.ExplosionVibration();
+        Invoke("InvokeDeathUI", 1f);
+
+        if (PlayerPrefs.GetInt("VibrationINT") == 1) 
+        { 
+            PhoneVibration.ExplosionVibration(); 
+        }
+        
         InputUIHUD.SetActive(false);
 
         
@@ -184,6 +199,8 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void InvokeDeathUI()
     {
+        SFXPlayer.PlayOneShot(LoseSound, 0.75f);
+
         LevelFailedUI.SetActive(true);
 
         AddManager.Instance.InterstitialAd.ShowAd();

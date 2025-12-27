@@ -8,12 +8,14 @@ public class MainMenuScript : MonoBehaviour
     [SerializeField] GameObject GameTitle;
     [SerializeField] GameObject ReturnButtonUI;
     [SerializeField] GameObject MainMenuSelection;
+    [SerializeField] GameObject SettingsMenu_UI;
     [SerializeField] GameObject NormalSweeperSelection;
     [SerializeField] GameObject BookLevelSelection;
     [SerializeField] GameObject TS_Book1;
     [SerializeField] Text GameCurrentcyText;
-    
 
+    [SerializeField] Toggle VibrationToggle;
+    [SerializeField] Toggle GyroToggle;
 
 
     bool InMainSelection = true;
@@ -31,6 +33,30 @@ public class MainMenuScript : MonoBehaviour
         }
 
 
+
+
+
+
+
+        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        {
+            VibrationToggle.isOn = true;
+        }
+        else
+        {
+            VibrationToggle.isOn = false;
+        }
+        if (PlayerPrefs.GetInt("GyroINT") == 1)
+        {
+            GyroToggle.isOn = true;
+        }
+        else
+        {
+            GyroToggle.isOn = false;
+        }
+
+
+
         MainMenuSelection.SetActive(true);
         ReturnButtonUI.SetActive(false);
 
@@ -39,7 +65,11 @@ public class MainMenuScript : MonoBehaviour
 
     public void ReturnButton()
     {
-        
+        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        {
+            PhoneVibration.ButtonVibration();
+        }
+
         if (InUILayer1 && !InUILayer2)
         {
             InUILayer1 = false;
@@ -53,6 +83,10 @@ public class MainMenuScript : MonoBehaviour
             if (BookLevelSelection.activeInHierarchy)
             {
                 BookLevelSelection.SetActive(false);
+            }
+            if (SettingsMenu_UI.activeInHierarchy)
+            {
+                SettingsMenu_UI.SetActive(false);
             }
         }
 
@@ -94,7 +128,44 @@ public class MainMenuScript : MonoBehaviour
         TS_Book1.SetActive(true);
         BookLevelSelection.SetActive(false);
     }
+    public void OpenSettingsMenu()
+    {
+        GameTitle.SetActive(false);
+        InUILayer1 = true;
+        ReturnButtonUI.SetActive(true);
+        SettingsMenu_UI.SetActive(true);
+    }
 
-  
+
+    public void ToggleVibration()
+    {
+        if (VibrationToggle.isOn)
+        {
+            //Debug.Log("Vib ON");
+            PlayerPrefs.SetInt("VibrationINT", 1);
+        }
+        else
+        {
+            //Debug.Log("Vib OFF");
+            PlayerPrefs.SetInt("VibrationINT", 0);
+        }
+        PlayerPrefs.Save();
+    }
+
+    public void ToggleGyro()
+    {
+        if (GyroToggle.isOn)
+        {
+            //Debug.Log("GYR OFF");
+            PlayerPrefs.SetInt("GyroINT", 1);
+        }
+        else
+        {
+            //Debug.Log("GYR OFF");
+            PlayerPrefs.SetInt("GyroINT", 0);
+        }
+        PlayerPrefs.Save();
+    }
+
 
 }
