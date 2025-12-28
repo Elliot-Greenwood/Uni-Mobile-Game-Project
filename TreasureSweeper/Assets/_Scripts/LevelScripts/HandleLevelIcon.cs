@@ -5,15 +5,22 @@ public class HandleLevelIcon : MonoBehaviour
 {
     [SerializeField] string LevelName;
 
-    Image ThisImage;
+    [SerializeField] Image ThisImage;
+    [SerializeField] Sprite NotUnlocked;
+    [SerializeField] Sprite Uncovered;
+
 
     void Start()
     {
-        ThisImage = GetComponent<Image>();
+        //ThisImage = GetComponentInChildren<Image>();
         
         if (PlayerPrefs.GetInt(LevelName) == 1)
         {
-            ThisImage.color = Color.white;
+            ThisImage.sprite = Uncovered;
+        }
+        else
+        {
+            ThisImage.sprite = NotUnlocked;
         }
 
     }

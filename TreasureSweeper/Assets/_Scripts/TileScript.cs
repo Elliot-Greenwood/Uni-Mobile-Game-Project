@@ -119,9 +119,11 @@ public class TileScript : MonoBehaviour
 
     public void ActivateTheTile()
     {
-        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
-        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
-        
+        if (PlayerPrefs.GetInt("AudioINT") == 0)
+        {
+            SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+            SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+        }
 
         if (!TileIsFlagged)
         {
@@ -140,15 +142,22 @@ public class TileScript : MonoBehaviour
                 return;
             }
 
+            if (!TileIsBomb)
+            {
+                if (PlayerPrefs.GetInt("GameMode") == 2)
+                {
+                    int rng = Random.Range(0, 1001);
+
+                    if (rng >= 975)
+                    {
+                        Coin.SetActive(true);
+                    }
+                }
+            }
+
             if (HowManyMinesInArea == 0)
             {
-                int rng = Random.Range(0, 1001);
-
-                if (rng >= 950)
-                {
-                    Coin.SetActive(true);
-                }
-
+                
 
                 Invoke("Open_NSEW_Tiles", 0.2f);
                 Invoke("Open_NEWSEW_Tiles", 0.45f);
@@ -193,8 +202,11 @@ public class TileScript : MonoBehaviour
 
     public void PlaceTheFlag()
     {
-        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
-        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+        if (PlayerPrefs.GetInt("AudioINT") == 0)
+        {
+            SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+            SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+        }
 
         if (MineManagerScript.Flags > 0)
         {
@@ -211,9 +223,11 @@ public class TileScript : MonoBehaviour
     }
     public void RemoveTheFlag()
     {
-        SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
-        SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
-
+        if (PlayerPrefs.GetInt("AudioINT") == 0)
+        {
+            SFXPlayer.pitch = Random.Range(0.5f, 1.9f);
+            SFXPlayer.PlayOneShot(DigDirtSoundEffect, 0.5f);
+        }
         TileIsFlagged = false;
         Flag.SetActive(false);
         ActionsListener.OnFlagRemove();

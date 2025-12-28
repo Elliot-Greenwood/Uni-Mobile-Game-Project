@@ -8,6 +8,7 @@ public class MineFieldManagerScript : MonoBehaviour
 {
     SetLevelCompletion LevelCompletionScript;
     AudioSource SFXPlayer;
+    [SerializeField] AudioSource MusicPlayer;
 
     public TileScript[] MineFieldTiles;
     public int SetAmmountOfMines = 0;
@@ -27,6 +28,7 @@ public class MineFieldManagerScript : MonoBehaviour
     [SerializeField] GameObject LevelFailedUI;
 
     [SerializeField] Text FlagsTextUI = null;
+    [SerializeField] Text CoinsTextUI = null;
 
 
     [SerializeField] AudioClip WinSound, LoseSound;
@@ -71,7 +73,12 @@ public class MineFieldManagerScript : MonoBehaviour
         Flags = SetAmmountOfMines;
         FlagsTextUI.text = Flags.ToString();
         CoinsCollected = 0;
+        CoinsTextUI.text = CoinsCollected.ToString();
 
+        if (PlayerPrefs.GetInt("AudioINT") == 0)
+        {
+            MusicPlayer.Play();
+        }
         StartCoroutine(DiplayBannerAdds());
     }
 
@@ -128,7 +135,7 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Flagged_Correctly()
     {
         MinesFlaggedCorrectly++;
-        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        if (PlayerPrefs.GetInt("VibrationINT") == 0)
         {
             PhoneVibration.FlagPlantVibration();
         }
@@ -186,7 +193,7 @@ public class MineFieldManagerScript : MonoBehaviour
         IsGameComplete = true;
         Invoke("InvokeDeathUI", 1f);
 
-        if (PlayerPrefs.GetInt("VibrationINT") == 1) 
+        if (PlayerPrefs.GetInt("VibrationINT") == 0) 
         { 
             PhoneVibration.ExplosionVibration(); 
         }
@@ -203,6 +210,8 @@ public class MineFieldManagerScript : MonoBehaviour
 
         LevelFailedUI.SetActive(true);
 
+        //add code to reduce this ad frequincy or completely remove.
+        //replace it with reward ad
         AddManager.Instance.InterstitialAd.ShowAd();
     }
 
@@ -210,6 +219,7 @@ public class MineFieldManagerScript : MonoBehaviour
     void Collected_A_Coin()
     {
         CoinsCollected++;
+        CoinsTextUI.text = CoinsCollected.ToString();
 
     }
 

@@ -6,10 +6,15 @@ public class PlayerScript : MonoBehaviour
 {
     InputSub _input;
     CharacterController CharController;
+    AudioSource SFXPlayer;
+
     [SerializeField] MineFieldManagerScript GameManager;
     [SerializeField] Animator Anim;
 
     [SerializeField] Transform CamTargetPoint;
+
+
+    [SerializeField] AudioClip CoinSound;
 
     float PlayerMovementSpeed = 7f;
     float RotationSpeed = 15f;
@@ -29,6 +34,7 @@ public class PlayerScript : MonoBehaviour
     {
         _input = GetComponent<InputSub>();
         CharController = GetComponent<CharacterController>();
+        SFXPlayer = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -154,6 +160,9 @@ public class PlayerScript : MonoBehaviour
 
         if (other.gameObject.layer == 9)
         {
+            //coin collect
+            SFXPlayer.PlayOneShot(CoinSound, 0.8f);
+
             ActionsListener.OnCoinCollected();
 
             Destroy(other.gameObject);

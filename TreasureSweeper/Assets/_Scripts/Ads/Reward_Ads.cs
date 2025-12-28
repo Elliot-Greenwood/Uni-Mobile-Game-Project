@@ -4,7 +4,8 @@ using UnityEngine.Advertisements;
 
 public class Reward_Ads : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    //[SerializeField] Button _showAdButton;
+    [SerializeField] Button _showAdButton;
+    [SerializeField] Text GameCurrentcyText;
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
     [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
     string _adUnitId; // This will remain null for unsupported platforms
@@ -19,28 +20,29 @@ public class Reward_Ads : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLis
 #endif
 
         // Disable the button until the ad is ready to show:
-        //_showAdButton.interactable = false;
+        _showAdButton.interactable = false;
     }
 
     // Call this public method when you want to get an ad ready to show.
     public void LoadRewardAd()
     {
         // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
-        Debug.Log("Loading Ad: " + _adUnitId);
+        //Debug.Log("Loading Ad: " + _adUnitId);
         Advertisement.Load(_adUnitId, this);
+        GameCurrentcyText.text = PlayerPrefs.GetInt("GameCurrency").ToString();
     }
 
     // If the ad successfully loads, add a listener to the button and enable it:
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
-        Debug.Log("Ad Loaded: " + adUnitId);
+        //Debug.Log("Ad Loaded: " + adUnitId);
 
         if (adUnitId.Equals(_adUnitId))
         {
             // Configure the button to call the ShowAd() method when clicked:
-            //_showAdButton.onClick.AddListener(ShowRewardAd);
+            _showAdButton.onClick.AddListener(ShowRewardAd);
             // Enable the button for users to click:
-            //_showAdButton.interactable = true;
+            _showAdButton.interactable = true;
         }
     }
 
@@ -48,7 +50,7 @@ public class Reward_Ads : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLis
     public void ShowRewardAd()
     {
         // Disable the button:
-        //_showAdButton.interactable = false;
+        _showAdButton.interactable = false;
         // Then show the ad:
         Advertisement.Show(_adUnitId, this);
         LoadRewardAd();
@@ -59,10 +61,13 @@ public class Reward_Ads : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLis
     {
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
-            Debug.Log("Unity Ads Rewarded Ad Completed");
+            //Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
 
             //ADD COIN!
+
+            PlayerPrefs.SetInt("GameCurrency", PlayerPrefs.GetInt("GameCurrency") + 10);
+            PlayerPrefs.Save();
 
             //====================================================================
             //====================================================================

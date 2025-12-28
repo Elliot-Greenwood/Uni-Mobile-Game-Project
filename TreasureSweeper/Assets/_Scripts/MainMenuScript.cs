@@ -16,6 +16,7 @@ public class MainMenuScript : MonoBehaviour
 
     [SerializeField] Toggle VibrationToggle;
     [SerializeField] Toggle GyroToggle;
+    [SerializeField] Toggle AudioToggle;
 
 
     bool InMainSelection = true;
@@ -33,12 +34,15 @@ public class MainMenuScript : MonoBehaviour
         }
 
 
-
-
-
-
-
-        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        if (PlayerPrefs.GetInt("AudioINT") == 0)
+        {
+            AudioToggle.isOn = true;
+        }
+        else
+        {
+            AudioToggle.isOn = false;
+        }
+        if (PlayerPrefs.GetInt("VibrationINT") == 0)
         {
             VibrationToggle.isOn = true;
         }
@@ -46,7 +50,7 @@ public class MainMenuScript : MonoBehaviour
         {
             VibrationToggle.isOn = false;
         }
-        if (PlayerPrefs.GetInt("GyroINT") == 1)
+        if (PlayerPrefs.GetInt("GyroINT") == 0)
         {
             GyroToggle.isOn = true;
         }
@@ -65,7 +69,7 @@ public class MainMenuScript : MonoBehaviour
 
     public void ReturnButton()
     {
-        if (PlayerPrefs.GetInt("VibrationINT") == 1)
+        if (PlayerPrefs.GetInt("VibrationINT") == 0)
         {
             PhoneVibration.ButtonVibration();
         }
@@ -112,6 +116,9 @@ public class MainMenuScript : MonoBehaviour
         NormalSweeperSelection.SetActive(true);
         MainMenuSelection.SetActive(false);
 
+        PlayerPrefs.SetInt("GameMode", 1);
+        PlayerPrefs.Save();
+
     }
     public void OpenTreasureSpeeperUI()
     {
@@ -119,6 +126,9 @@ public class MainMenuScript : MonoBehaviour
         ReturnButtonUI.SetActive(true);
         BookLevelSelection.SetActive(true);
         MainMenuSelection.SetActive(false);
+        
+        PlayerPrefs.SetInt("GameMode", 2);
+        PlayerPrefs.Save();
     }
 
     public void OpenBook1UI()
@@ -142,12 +152,12 @@ public class MainMenuScript : MonoBehaviour
         if (VibrationToggle.isOn)
         {
             //Debug.Log("Vib ON");
-            PlayerPrefs.SetInt("VibrationINT", 1);
+            PlayerPrefs.SetInt("VibrationINT", 0);
         }
         else
         {
             //Debug.Log("Vib OFF");
-            PlayerPrefs.SetInt("VibrationINT", 0);
+            PlayerPrefs.SetInt("VibrationINT", 1);
         }
         PlayerPrefs.Save();
     }
@@ -157,12 +167,27 @@ public class MainMenuScript : MonoBehaviour
         if (GyroToggle.isOn)
         {
             //Debug.Log("GYR OFF");
-            PlayerPrefs.SetInt("GyroINT", 1);
+            PlayerPrefs.SetInt("GyroINT", 0);
         }
         else
         {
             //Debug.Log("GYR OFF");
-            PlayerPrefs.SetInt("GyroINT", 0);
+            PlayerPrefs.SetInt("GyroINT", 1);
+        }
+        PlayerPrefs.Save();
+    }
+
+    
+
+        public void ToggleAudio()
+    {
+        if (AudioToggle.isOn)
+        {
+            PlayerPrefs.SetInt("AudioINT", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("AudioINT", 1);
         }
         PlayerPrefs.Save();
     }
