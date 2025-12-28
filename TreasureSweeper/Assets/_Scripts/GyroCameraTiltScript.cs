@@ -13,7 +13,7 @@ public class GyroCameraTiltScript : MonoBehaviour
 
     private void Start()
     {
-        if (PlayerPrefs.GetInt("GyroINT") == 1)
+        if (PlayerPrefs.GetInt("GyroINT") == 0)
         {
             DefaultGyroRotation = Quaternion.Euler(Xoffset, 0f, 0f);
         }
@@ -27,7 +27,7 @@ public class GyroCameraTiltScript : MonoBehaviour
 
     void Update()
     {
-        if (PlayerPrefs.GetInt("GyroINT") == 1)
+        if (PlayerPrefs.GetInt("GyroINT") == 0)
         {
 
 
