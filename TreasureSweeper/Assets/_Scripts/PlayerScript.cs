@@ -46,6 +46,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (!GameManager.IsGameComplete && CanMove)
         {
+            //MOVEMENT HANDLING
             PlayerInputValue = new Vector2(_input.MoveInput.x, _input.MoveInput.y).normalized;
             PlayerVelocity = CamTargetPoint.forward * PlayerInputValue.y + CamTargetPoint.right * PlayerInputValue.x;
 
@@ -92,6 +93,7 @@ public class PlayerScript : MonoBehaviour
 
         if (TileObject != null && _input.DigButton && !TileObject.TileIsActivated && ActionDelay <= 0f) //add !TileObject.TileIsActivated if it bothers that dig is performed still with active tile
         {
+            //DIG TILE MECHANIC
             ActionDelay = 1.1f;
             CanMove = false;
             Anim.SetTrigger("PlayerDigTile");
@@ -108,7 +110,7 @@ public class PlayerScript : MonoBehaviour
 
         if (_input.FlagButton && TileObject != null && !TileObject.TileIsActivated && ActionDelay <= 0f)
         {
-            
+            //FLAGGING MECHANIC
             if (TileObject.TileIsFlagged)
             {
                 CanMove = false;
@@ -153,12 +155,12 @@ public class PlayerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7 && TileObject == null)
+        if (other.gameObject.layer == 7 && TileObject == null) 
         {
             TileObject = other.gameObject.GetComponent<TileScript>();
         }
 
-        if (other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9) //COIN COLLISIONS
         {
             //coin collect
             SFXPlayer.PlayOneShot(CoinSound, 0.8f);

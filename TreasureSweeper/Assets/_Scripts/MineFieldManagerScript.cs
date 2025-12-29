@@ -89,10 +89,12 @@ public class MineFieldManagerScript : MonoBehaviour
     }
 
 
-    public void RandomizeTheMineField(TileScript FirstActivatedTile)
+    public void RandomizeTheMineField(TileScript FirstActivatedTile) 
     {
-        if (MinesHaveBeenRandomized) return;
+        //This code handles the first dig.
+        //it makes sure that the very first tile is NOT a Mine.
 
+        if (MinesHaveBeenRandomized) return;
         MinesHaveBeenRandomized = true;
 
         List<TileScript> RemainingTiles = new List<TileScript>(MineFieldTiles);
@@ -135,10 +137,7 @@ public class MineFieldManagerScript : MonoBehaviour
     void Mine_Was_Flagged_Correctly()
     {
         MinesFlaggedCorrectly++;
-        if (PlayerPrefs.GetInt("VibrationINT") == 0)
-        {
-            PhoneVibration.FlagPlantVibration();
-        }
+       
 
         if (!IsGameComplete && SetAmmountOfMines == MinesFlaggedCorrectly) //Game Win
         {
@@ -150,6 +149,7 @@ public class MineFieldManagerScript : MonoBehaviour
     }
     void InvokeLevelCompleteUI()
     {
+        //add playerpref
         SFXPlayer.PlayOneShot(WinSound, 0.5f);
 
         LevelCompleteUI.SetActive(true);
@@ -164,9 +164,13 @@ public class MineFieldManagerScript : MonoBehaviour
     {
         MinesFlaggedCorrectly--;
     }
-    void Tile_Flagged()
+    void Tile_Flagged() //FLAGGING TILE HANDLER
     {
-        
+        if (PlayerPrefs.GetInt("VibrationINT") == 0)
+        {
+            PhoneVibration.FlagPlantVibration();
+        }
+
         Flags--;
         FlagsTextUI.text = Flags.ToString();
         if (Flags == 0)
@@ -206,6 +210,7 @@ public class MineFieldManagerScript : MonoBehaviour
 
     void InvokeDeathUI()
     {
+        //add playerpref
         SFXPlayer.PlayOneShot(LoseSound, 0.75f);
 
         LevelFailedUI.SetActive(true);
